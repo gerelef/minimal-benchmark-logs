@@ -1,10 +1,38 @@
-import platform, socket, psutil, logging
-from typing import List, Dict
+import logging
+import platform
+import psutil
+import socket
+from typing import List, Dict, Set
 
 PROC_KEYS = ["pid", "name", "cpu_num", "cpu_percent", "cpu_times",
              "num_threads", "threads", "memory_full_info",
              "memory_info", "memory_percent", "open_files", "nice",
              "status"]
+
+_YES_SHORT_ANS = "Y"
+_NO_SHORT_ANS = "N"
+_YES_ANS = "YES"
+_NO_ANS = "NO"
+
+
+def str_is_yes_or_no(s):
+    return str_is_yes(s) or str_is_no(s)
+
+
+def str_is_yes(s):
+    s = s.upper()
+    return s == _YES_ANS or s == _YES_SHORT_ANS
+
+
+def str_is_no(s):
+    s = s.upper()
+    return s == _NO_ANS or s == _NO_SHORT_ANS
+
+
+def print_identifiable_characteristics_of_processes(proc_set: Set[psutil.Process]):
+    for process in proc_set:
+        print(f"PID: {process.pid} PPID: {process.ppid()} NAME: {process.name()} STATUS: {process.status()}")
+
 
 def get_sys_info():
     try:
