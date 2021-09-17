@@ -209,8 +209,8 @@ class ProcessLogger:
         self.conv_1d_list_to_str_list = lambda l: [str(v) for v in l]
 
     def __enter__(self):
-        self.fname_process += str(datetime.fromtimestamp(time())) + ".csv"
-        self.fname_system += str(datetime.fromtimestamp(time())) + ".csv"
+        self.fname_process += datetime.fromtimestamp(time()).strftime("%H_%M_%S") + ".csv"
+        self.fname_system += datetime.fromtimestamp(time()).strftime("%H_%M_%S") + ".csv"
         self.fout_process = open(self.fname_process, "w")
         self.fout_system = open(self.fname_system, "w")
         self.fout_errors = open("errors.log", "w+")
@@ -297,7 +297,7 @@ class ProcessLogger:
 
     @staticmethod
     def get_process_performance(p: Process):
-        return [p.cpu_num(), p.cpu_percent(interval=0.01)]
+        return [psutil.cpu_count(), p.cpu_percent(interval=0.01)]
 
     @staticmethod
     def get_process_memory_used(p: Process):
