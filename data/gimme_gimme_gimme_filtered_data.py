@@ -8,7 +8,7 @@ _TIMESTAMP_COLUMN = 0
 _PID_COLUMN = 1
 _PPID_COLUMN = 2
 _PNAME_COLUMN = 3
-_CPU_NUM_COLUMN = 4
+_CPU_COUNT_COLUMN = 4
 _CPU_PERCENT_COLUMN = 5
 _PROCESS_PHYSICAL_MEMORY_USED = 6
 
@@ -43,7 +43,7 @@ def write_csv_per_process(fname, data_list: List):
 def process_data_per_process(data_list: List):
     true_cpu_usage = list(map(lambda r: float(r[_CPU_PERCENT_COLUMN]) / psutil.cpu_count(), data_list))
     [r.pop(_CPU_PERCENT_COLUMN) for r in data_list]
-    [r.pop(_CPU_NUM_COLUMN) for r in data_list]
+    [r.pop(_CPU_COUNT_COLUMN) for r in data_list]
 
     for row, cpu_usage_per_core in zip(data_list, true_cpu_usage):
         row.insert(4, cpu_usage_per_core)
